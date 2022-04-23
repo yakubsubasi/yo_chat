@@ -1,6 +1,9 @@
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yo_chat/controllers/FirebaseController.dart';
+import 'package:yo_chat/controllers/models/YoUser.dart';
+import 'package:yo_chat/controllers/models/message.dart';
 
 import '../message_page/message_page.dart';
 
@@ -10,6 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<FirebaseController>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Yo App'),

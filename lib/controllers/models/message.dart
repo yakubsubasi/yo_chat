@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:json_annotation/json_annotation.dart';
+
 class YoUser {
   String displayName;
   String email;
