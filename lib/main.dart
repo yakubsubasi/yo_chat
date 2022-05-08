@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       darkTheme: ThemeData.dark(),
-      title: 'Yo App',
+      title: 'Yo Chat',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       home: controller.isLoggedIn ? const HomePage() : const LoginPage(),
     );

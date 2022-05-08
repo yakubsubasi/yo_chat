@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:yo_chat/controllers/conversation_controller.dart';
 import 'package:yo_chat/pages/create_conversation_page/create_conversation_page.dart';
 import 'package:yo_chat/pages/home_page/home_page_controller.dart';
+import 'package:yo_chat/pages/home_page/widgets/homapage_floatin_action_button.dart';
 
 import '../message_page/message_page.dart';
 
@@ -17,14 +18,9 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Yo App'),
+        title: const Text('Yo Chat'),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => CreateConversationPage(),
-              transition: Transition.cupertino);
-        },
-      ),
+      floatingActionButton: HomePageFab(),
       body: Obx(
         () => ListView.builder(
           itemCount: conversationController.conversations.length,
@@ -56,7 +52,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                Get.to(() => DetailsPage());
+                Get.to(() => MessagePage(conversation: conversation));
               },
             );
           },
