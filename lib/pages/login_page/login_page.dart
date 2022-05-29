@@ -1,6 +1,6 @@
-import 'package:country_calling_code_picker/picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:yo_chat/pages/login_page/login_page.controller.dart';
 
 class LoginPage extends StatelessWidget {
@@ -17,38 +17,30 @@ class LoginPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              SizedBox(height: 100),
+              SizedBox(height: 200),
               Obx(
                 () => Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        controller.onCountryPickerPressed();
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Pick Country'),
-                          Icon(Icons.arrow_drop_down)
-                        ],
-                      ),
-                    ),
-                    TextField(
+                    IntlPhoneField(
                       decoration: InputDecoration(
                         errorText: controller.phoneNumberError.value,
                         labelText: 'Phone Number',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(),
+                        ),
                       ),
-                      keyboardType: TextInputType.phone,
-                      onChanged: (value) {
-                        controller.phoneNumber.value = value;
+                      initialCountryCode: 'TR',
+                      onChanged: (phone) {
+                        controller.phoneNumber.value = phone.toString();
+                        print(phone.completeNumber);
                       },
                     ),
-                    SizedBox(
-                      height: 150,
-                    ),
+                    SizedBox(height: 350),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          controller.login();
+                        },
                         child: Text('Next'),
                         style: ButtonStyle(
                             foregroundColor:
