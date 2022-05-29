@@ -23,6 +23,18 @@ class Message {
   factory Message.fromJson(Map<String, dynamic> data) =>
       _$MessageFromJson(data);
   Map<String, dynamic> toJson() => _$MessageToJson(this);
+
+  String sentTimetoString() {
+    String _twoDigits(int n) {
+      if (n >= 10) return "${n}";
+      return "0${n}";
+    }
+
+    String min = _twoDigits(sentTime.minute);
+    String hour = _twoDigits(sentTime.hour);
+
+    return "$hour:$min";
+  }
 }
 
 @JsonEnum()

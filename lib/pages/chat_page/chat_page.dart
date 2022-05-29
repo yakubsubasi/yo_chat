@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yo_chat/providers/models/conversation.dart';
+import 'widgets/message_text_field.dart';
+import 'widgets/messages_list_view.dart';
 
-class MessagePage extends StatelessWidget {
+class ChatPage extends StatelessWidget {
   Conversation conversation;
 
-  MessagePage({Key? key, required this.conversation}) : super(key: key);
+  ChatPage({Key? key, required this.conversation}) : super(key: key);
+
+  get onPressed => null;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +27,12 @@ class MessagePage extends StatelessWidget {
         ),
         title: Text('${conversation.name}'),
       ),
-      body: ListView.builder(
-          itemCount: conversation.messages.length,
-          itemBuilder: (context, index) {
-            final message = conversation.messages[index];
-            return ListTile(
-              title: Text(message.text),
-              subtitle: Text(message.sentTime.toString()),
-            );
-          }),
+      body: Column(
+        children: [
+          Expanded(child: MessagesListView(conversation: conversation)),
+          MessageTextField(onPressed: () {})
+        ],
+      ),
     );
   }
 }

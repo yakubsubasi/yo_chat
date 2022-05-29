@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: controller.isLoggedIn ? const HomePage() : const LoginPage(),
+      home: const HomePage(),
     );
   }
 }

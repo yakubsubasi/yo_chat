@@ -5,8 +5,10 @@ import 'package:yo_chat/controllers/conversation_controller.dart';
 import 'package:yo_chat/pages/create_conversation_page/create_conversation_page.dart';
 import 'package:yo_chat/pages/home_page/home_page_controller.dart';
 import 'package:yo_chat/pages/home_page/widgets/homapage_floatin_action_button.dart';
+import 'package:yo_chat/providers/models/message.dart';
 
-import '../message_page/message_page.dart';
+import '../../providers/models/conversation.dart';
+import '../chat_page/chat_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +17,27 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put<HomePageController>(HomePageController());
     final conversationController = Get.find<ConversationController>();
+
+    // TEST
+    final Conversation a = Conversation(
+      id: "d",
+      name: "d",
+      messages: List.generate(
+          20,
+          (index) => Message(
+                id: "",
+                direction: index % 2 == 1
+                    ? MessageDirection.outgoing
+                    : MessageDirection.incoming,
+                text: "Merhaba nasılsın",
+                sentTime: DateTime.now().add(Duration(minutes: index)),
+                senderId: '',
+                status: MessageStatus.sent,
+              )),
+      phoneNumber: '',
+      photoUrl: '',
+    );
+    conversationController.conversations.add(a);
 
     return Scaffold(
       appBar: AppBar(
@@ -52,7 +75,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                Get.to(() => MessagePage(conversation: conversation));
+                Get.to(() => ChatPage(conversation: conversation));
               },
             );
           },
