@@ -72,6 +72,7 @@ class AuthenticationController extends GetxController {
       phoneNumber: phoneNumber,
       verificationCompleted: (AuthCredential credential) {
         _signInWithCredential(credential);
+        //TODO Eğer phone number zaten onaylandıysa buraya düşüyor burda auto navigaiton yapılmalı
       },
       verificationFailed: (FirebaseAuthException exception) async {
         Get.offAll(() => const LoginPage());
