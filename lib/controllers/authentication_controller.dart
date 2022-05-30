@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yo_chat/pages/home_page/home_page.dart';
 import 'package:yo_chat/pages/login_page/login_page.dart';
@@ -74,7 +75,7 @@ class AuthenticationController extends GetxController {
       },
       verificationFailed: (FirebaseAuthException exception) async {
         Get.offAll(() => const LoginPage());
-        Get.dialog(const Text("Failed to verify phone number"));
+        Get.dialog(Dialog(child: const Text("Failed to verify phone number")));
       },
       codeSent: (String verificationId, int? resendToken) async {
         var code = await Get.to<String>(() => const VerifyPhoneNumberPage());

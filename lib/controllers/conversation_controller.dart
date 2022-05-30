@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:yo_chat/controllers/authentication_controller.dart';
 import 'package:yo_chat/providers/firestore_provider.dart';
 import 'package:yo_chat/providers/models/yo_user.dart';
 
@@ -50,5 +51,19 @@ class ConversationController extends GetxController {
   void createConversation(YoUser user) {
     var conversation = Conversation.fromUser(user);
     firestoreProvider.createConversation(conversation);
+  }
+
+  Future<List<YoUser>> getUsers() async {
+    var users = await firestoreProvider.getUsers();
+    users = _removeSelf(users);
+
+    return users;
+  }
+
+  List<YoUser> _removeSelf(List<YoUser> users) {
+    var uid = Get.find<AuthenticationController>().user.value?.uid;
+    if (uid == null) throw Error();
+
+    return users.where((element) => element.uid != uid).toList();
   }
 }

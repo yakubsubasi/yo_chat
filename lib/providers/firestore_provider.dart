@@ -49,4 +49,9 @@ class FirestoreProvider extends GetxService {
     await current.reference.set(user);
     return true;
   }
+
+  Future<List<YoUser>> getUsers() async {
+    var usersSnaps = await usersRef.get();
+    return usersSnaps.docs.map((e) => e.data).toList();
+  }
 }

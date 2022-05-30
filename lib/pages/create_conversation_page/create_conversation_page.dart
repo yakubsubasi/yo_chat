@@ -11,21 +11,28 @@ class CreateConversationPage extends StatelessWidget {
     final conversationController = Get.find<ConversationController>();
     return Scaffold(
       appBar: AppBar(),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text("test"),
-            onTap: () {
-              conversationController.createConversation(YoUser(
-                name: "test",
-                email: "test",
-                uid: "test",
-                phoneNumber: "",
-              ));
-            },
-          )
-        ],
-      ),
+      body: FutureBuilder<List<YoUser>>(
+          future: conversationController.getUsers(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              var data = snapshot.data!;
+              return ListView(
+                children: [
+                  ...data.map(
+                    (e) => ListTile(
+                      title: Text(e.phoneNumber),
+                      onTap: () {
+                        conversationController.createConversation(e);
+                      },
+                    ),
+                  )
+                ],
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
     );
   }
 }

@@ -13,45 +13,64 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Verify phone number'),
       ),
-      body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            children: [
-              SizedBox(height: 200),
-              Obx(
-                () => Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    IntlPhoneField(
-                      decoration: InputDecoration(
-                        errorText: controller.phoneNumberError.value,
-                        labelText: 'Phone Number',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(),
-                        ),
+      body: LayoutBuilder(builder: (context, constraints) {
+        return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                SizedBox(height: constraints.maxHeight * .2),
+                Obx(
+                  () => SizedBox(
+                    height: constraints.maxHeight * .8,
+                    child: Form(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          IntlPhoneField(
+                            decoration: InputDecoration(
+                              errorText: controller.phoneNumberError.value,
+                              labelText: 'Phone Number',
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(),
+                              ),
+                            ),
+                            autovalidateMode: AutovalidateMode.disabled,
+                            initialCountryCode: 'TR',
+                            onChanged: (phone) {
+                              controller.phoneNumber.value = phone.number;
+                              controller.countryCode.value = phone.countryCode;
+                              //phone.print(phone.completeNumber);
+                            },
+                          ),
+                          Spacer(),
+                          Builder(builder: (context) {
+                            return TextButton(
+                              onPressed: () {
+                                if (Form.of(context)!.validate()) {
+                                  controller.login();
+                                }
+                              },
+                              child: Text('Next'),
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all(Colors.white),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.teal),
+                              ),
+                            );
+                          }),
+                          SizedBox(
+                            height: constraints.maxHeight * .1,
+                          )
+                        ],
                       ),
-                      initialCountryCode: 'TR',
-                      onChanged: (phone) {
-                        controller.phoneNumber.value = phone.toString();
-                        print(phone.completeNumber);
-                      },
                     ),
-                    SizedBox(height: 350),
-                    TextButton(
-                        onPressed: () {
-                          controller.login();
-                        },
-                        child: Text('Next'),
-                        style: ButtonStyle(
-                            foregroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.teal))),
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          )),
+              ],
+            ));
+      }),
     );
   }
 }
