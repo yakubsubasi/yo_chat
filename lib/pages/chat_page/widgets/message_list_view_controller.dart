@@ -23,9 +23,9 @@ class MessageListViewController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
     subscription = ref.snapshots().listen((event) {
-      messages.value = event.docs.map((e) => e.data).toList();
+      messages.value = event.docs.map((e) => e.data).toList()
+        ..sort((a, b) => b.sentTime.compareTo(a.sentTime));
     });
   }
 

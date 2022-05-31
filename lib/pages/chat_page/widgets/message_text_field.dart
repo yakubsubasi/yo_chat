@@ -50,9 +50,20 @@ class _MessageTextFieldState extends State<MessageTextField> {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 8),
-          child: IconButton(
-            onPressed: () => widget.onPressed(controller.value.text),
-            icon: const Icon(Icons.send),
+          child: ClipOval(
+            child: Container(
+              color: Colors.teal,
+              child: IconButton(
+                onPressed: () {
+                  if (controller.text.isNotEmpty) {
+                    widget.onPressed(controller.text);
+                    controller.text = "";
+                  }
+                },
+                color: Colors.white,
+                icon: const Icon(Icons.send),
+              ),
+            ),
           ),
         )
       ],
