@@ -6,6 +6,7 @@ import 'package:yo_chat/pages/create_conversation_page/create_conversation_page.
 import 'package:yo_chat/pages/home_page/home_page_controller.dart';
 import 'package:yo_chat/pages/home_page/widgets/homapage_floatin_action_button.dart';
 import 'package:yo_chat/providers/models/message.dart';
+import 'package:yo_chat/widgets/profile_image.dart';
 
 import '../../providers/models/conversation.dart';
 import '../chat_page/chat_page.dart';
@@ -18,27 +19,6 @@ class HomePage extends StatelessWidget {
     final controller = Get.put<HomePageController>(HomePageController());
     final conversationController = Get.find<ConversationController>();
 
-    // TEST
-    final Conversation a = Conversation(
-      id: "d",
-      name: "d",
-      messages: List.generate(
-          20,
-          (index) => Message(
-                id: "",
-                direction: index % 2 == 1
-                    ? MessageDirection.outgoing
-                    : MessageDirection.incoming,
-                text: "Merhaba nasılsın",
-                sentTime: DateTime.now().add(Duration(minutes: index)),
-                senderId: '',
-                status: MessageStatus.sent,
-              )),
-      phoneNumber: '',
-      photoUrl: '',
-    );
-    conversationController.conversations.add(a);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Yo Chat'),
@@ -50,11 +30,9 @@ class HomePage extends StatelessWidget {
           itemBuilder: (context, index) {
             final conversation = conversationController.conversations[index];
             return ListTile(
-              title: Text(conversation.name),
-              leading: CircleAvatar(
-                backgroundImage: conversation.photoUrl == null
-                    ? null
-                    : NetworkImage(conversation.photoUrl!),
+              title: Text(conversation.displayName),
+              leading: ProfileImage(
+                photoURL: conversation.photoUrl,
               ),
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,8 +47,8 @@ class HomePage extends StatelessWidget {
                     ),
                   Text(conversation.lastMessage),
                   Text(
-                    conversation.lastMessageTime.toString(),
-                    style: TextStyle(color: Colors.grey),
+                    conversation.lastMessageTime?.toString() ?? "",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ],
               ),

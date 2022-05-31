@@ -16,10 +16,6 @@ Conversation _$ConversationFromJson(Map<String, dynamic> json) => Conversation(
           ? null
           : DateTime.parse(json['lastMessageTime'] as String),
       unreadCount: json['unreadCount'] as int? ?? 0,
-      messages: (json['messages'] as List<dynamic>?)
-              ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
     );
 
 Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
@@ -31,5 +27,4 @@ Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
       'lastMessage': instance.lastMessage,
       'lastMessageTime': instance.lastMessageTime?.toIso8601String(),
       'unreadCount': instance.unreadCount,
-      'messages': instance.messages,
     };

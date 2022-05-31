@@ -27,13 +27,17 @@ class FirestoreProvider extends GetxService {
   }
 
   /// Creates a new conversation document under current user's subdocument
-  Future<void> createConversation(Conversation conversation) async {
+  Future<Conversation> createConversation(Conversation conversation) async {
     if (currentUserDoc != null) {
       var current =
           await currentUserDoc!.conversations.doc(conversation.id).get();
-      if (current.exists) throw Error();
+      if (current.exists) {
+        return current.data!;
+      }
       current.reference.set(conversation);
+      return conversation;
     }
+    throw Error();
   }
 
   Stream<YoUserDocumentSnapshot>? userDocumentStream() {

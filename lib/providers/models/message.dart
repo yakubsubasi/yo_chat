@@ -6,19 +6,14 @@ part 'message.g.dart';
 
 @JsonSerializable()
 class Message {
-  String id;
   String text;
   MessageDirection direction;
   DateTime sentTime;
-  String senderId;
-  MessageStatus status;
+
   Message({
-    required this.id,
     required this.text,
     required this.sentTime,
-    required this.senderId,
     required this.direction,
-    required this.status,
   });
   factory Message.fromJson(Map<String, dynamic> data) =>
       _$MessageFromJson(data);
@@ -43,6 +38,7 @@ enum MessageDirection {
   incoming,
   outgoing,
 }
+
 @JsonEnum()
 enum MessageStatus {
   unknown,

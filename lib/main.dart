@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yo_chat/controllers/authentication_controller.dart';
 import 'package:yo_chat/controllers/conversation_controller.dart';
+import 'package:yo_chat/controllers/remote_config_controller.dart';
 import 'package:yo_chat/firebase_options.dart';
 import 'package:yo_chat/providers/firebase_authentication_provider.dart';
 import 'package:yo_chat/providers/firestore_provider.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseAppCheck.instance.activate();
+  print(await FirebaseAppCheck.instance.getToken());
   initializeProviders();
   initializeControllers();
   runApp(const MyApp());
@@ -24,6 +26,7 @@ Future<void> main() async {
 void initializeControllers() {
   Get.lazyPut(() => AuthenticationController());
   Get.lazyPut(() => ConversationController());
+  Get.put(RemoteConfigController());
 }
 
 void initializeProviders() {

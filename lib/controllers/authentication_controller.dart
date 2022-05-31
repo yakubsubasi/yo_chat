@@ -72,7 +72,7 @@ class AuthenticationController extends GetxController {
       phoneNumber: phoneNumber,
       verificationCompleted: (AuthCredential credential) {
         _signInWithCredential(credential);
-        //TODO Eğer phone number zaten onaylandıysa buraya düşüyor burda auto navigaiton yapılmalı
+        Get.offAll(() => const HomePage());
       },
       verificationFailed: (FirebaseAuthException exception) async {
         Get.offAll(() => const LoginPage());
@@ -80,7 +80,7 @@ class AuthenticationController extends GetxController {
       },
       codeSent: (String verificationId, int? resendToken) async {
         var code = await Get.to<String>(() => const VerifyPhoneNumberPage());
-        if (code == null) throw Exception();
+        if (code == null) return;
         var credential = PhoneAuthProvider.credential(
             verificationId: verificationId, smsCode: code);
         _signInWithCredential(credential);

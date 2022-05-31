@@ -45,6 +45,8 @@ dependencies:
   grouped_list: ^5.1.1
   intl: ^0.17.0
   firebase_app_check: ^0.0.6+13
+  firebase_remote_config: ^2.0.8
+  firebase_analytics: ^9.1.9
   
 
 dev_dependencies:

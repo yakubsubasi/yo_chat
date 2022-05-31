@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yo_chat/controllers/conversation_controller.dart';
 import 'package:yo_chat/providers/models/yo_user.dart';
+import 'package:yo_chat/widgets/profile_image.dart';
 
 class CreateConversationPage extends StatelessWidget {
   const CreateConversationPage({Key? key}) : super(key: key);
@@ -21,6 +22,10 @@ class CreateConversationPage extends StatelessWidget {
                   ...data.map(
                     (e) => ListTile(
                       title: Text(e.phoneNumber),
+                      subtitle: Text(e.name),
+                      leading: ProfileImage(
+                        photoURL: e.photoUrl,
+                      ),
                       onTap: () {
                         conversationController.createConversation(e);
                       },

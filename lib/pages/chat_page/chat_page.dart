@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:yo_chat/controllers/conversation_controller.dart';
 import 'package:yo_chat/providers/models/conversation.dart';
 import 'widgets/message_text_field.dart';
 import 'widgets/messages_list_view.dart';
@@ -30,7 +31,12 @@ class ChatPage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(child: MessagesListView(conversation: conversation)),
-          MessageTextField(onPressed: () {})
+          MessageTextField(
+            onPressed: (message) {
+              Get.find<ConversationController>()
+                  .sendMessage(conversation, message);
+            },
+          )
         ],
       ),
     );

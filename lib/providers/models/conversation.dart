@@ -1,3 +1,4 @@
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yo_chat/providers/models/yo_user.dart';
 
@@ -14,7 +15,7 @@ class Conversation {
   String lastMessage;
   DateTime? lastMessageTime;
   int unreadCount;
-  List<Message> messages;
+
   Conversation({
     required this.id,
     required this.name,
@@ -23,7 +24,6 @@ class Conversation {
     this.lastMessage = "",
     this.lastMessageTime,
     this.unreadCount = 0,
-    this.messages = const [],
   });
   factory Conversation.fromJson(Map<String, dynamic> data) =>
       _$ConversationFromJson(data);
@@ -34,4 +34,12 @@ class Conversation {
         phoneNumber: user.phoneNumber,
       );
   Map<String, dynamic> toJson() => _$ConversationToJson(this);
+
+  String get displayName {
+    if (name.isNotEmpty) {
+      return name;
+    } else {
+      return phoneNumber ?? "";
+    }
+  }
 }

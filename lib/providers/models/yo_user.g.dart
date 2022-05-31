@@ -912,6 +912,10 @@ abstract class ConversationDocumentReference
     );
   }
 
+  late final MessageCollectionReference messages = _$MessageCollectionReference(
+    reference,
+  );
+
   @override
   Stream<ConversationDocumentSnapshot> snapshots();
 
@@ -928,7 +932,7 @@ abstract class ConversationDocumentReference
     String? photoUrl,
     String lastMessage,
     int unreadCount,
-    List<Message> messages,
+    String displayName,
   });
 
   Future<void> set(Conversation value);
@@ -951,6 +955,10 @@ class _$ConversationDocumentReference
       ),
     );
   }
+
+  late final MessageCollectionReference messages = _$MessageCollectionReference(
+    reference,
+  );
 
   @override
   Stream<ConversationDocumentSnapshot> snapshots() {
@@ -984,7 +992,7 @@ class _$ConversationDocumentReference
     Object? photoUrl = _sentinel,
     Object? lastMessage = _sentinel,
     Object? unreadCount = _sentinel,
-    Object? messages = _sentinel,
+    Object? displayName = _sentinel,
   }) async {
     final json = {
       if (id != _sentinel) "id": id as String,
@@ -993,7 +1001,7 @@ class _$ConversationDocumentReference
       if (photoUrl != _sentinel) "photoUrl": photoUrl as String?,
       if (lastMessage != _sentinel) "lastMessage": lastMessage as String,
       if (unreadCount != _sentinel) "unreadCount": unreadCount as int,
-      if (messages != _sentinel) "messages": messages as List<Message>,
+      if (displayName != _sentinel) "displayName": displayName as String,
     };
 
     return reference.update(json);
@@ -1109,15 +1117,16 @@ abstract class ConversationQuery
     List<int>? whereIn,
     List<int>? whereNotIn,
   });
-  ConversationQuery whereMessages({
-    List<Message>? isEqualTo,
-    List<Message>? isNotEqualTo,
-    List<Message>? isLessThan,
-    List<Message>? isLessThanOrEqualTo,
-    List<Message>? isGreaterThan,
-    List<Message>? isGreaterThanOrEqualTo,
+  ConversationQuery whereDisplayName({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<Message>? arrayContainsAny,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   });
 
   ConversationQuery orderById({
@@ -1192,12 +1201,12 @@ abstract class ConversationQuery
     ConversationDocumentSnapshot? startAfterDocument,
   });
 
-  ConversationQuery orderByMessages({
+  ConversationQuery orderByDisplayName({
     bool descending = false,
-    List<Message> startAt,
-    List<Message> startAfter,
-    List<Message> endAt,
-    List<Message> endBefore,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
     ConversationDocumentSnapshot? startAtDocument,
     ConversationDocumentSnapshot? endAtDocument,
     ConversationDocumentSnapshot? endBeforeDocument,
@@ -1434,19 +1443,20 @@ class _$ConversationQuery extends QueryReference<ConversationQuerySnapshot>
     );
   }
 
-  ConversationQuery whereMessages({
-    List<Message>? isEqualTo,
-    List<Message>? isNotEqualTo,
-    List<Message>? isLessThan,
-    List<Message>? isLessThanOrEqualTo,
-    List<Message>? isGreaterThan,
-    List<Message>? isGreaterThanOrEqualTo,
+  ConversationQuery whereDisplayName({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
     bool? isNull,
-    List<Message>? arrayContainsAny,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
   }) {
     return _$ConversationQuery(
       reference.where(
-        'messages',
+        'displayName',
         isEqualTo: isEqualTo,
         isNotEqualTo: isNotEqualTo,
         isLessThan: isLessThan,
@@ -1454,7 +1464,8 @@ class _$ConversationQuery extends QueryReference<ConversationQuerySnapshot>
         isGreaterThan: isGreaterThan,
         isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
         isNull: isNull,
-        arrayContainsAny: arrayContainsAny,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
       ),
       _collection,
     );
@@ -1712,7 +1723,7 @@ class _$ConversationQuery extends QueryReference<ConversationQuerySnapshot>
     return _$ConversationQuery(query, _collection);
   }
 
-  ConversationQuery orderByMessages({
+  ConversationQuery orderByDisplayName({
     bool descending = false,
     Object? startAt = _sentinel,
     Object? startAfter = _sentinel,
@@ -1723,7 +1734,7 @@ class _$ConversationQuery extends QueryReference<ConversationQuerySnapshot>
     ConversationDocumentSnapshot? endBeforeDocument,
     ConversationDocumentSnapshot? startAfterDocument,
   }) {
-    var query = reference.orderBy('messages', descending: descending);
+    var query = reference.orderBy('displayName', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -1796,6 +1807,422 @@ class ConversationQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
 
   @override
   final Conversation data;
+}
+
+/// A collection reference object can be used for adding documents,
+/// getting document references, and querying for documents
+/// (using the methods inherited from Query).
+abstract class MessageCollectionReference
+    implements
+        MessageQuery,
+        FirestoreCollectionReference<MessageQuerySnapshot> {
+  factory MessageCollectionReference(
+    DocumentReference<Conversation> parent,
+  ) = _$MessageCollectionReference;
+
+  static Message fromFirestore(
+    DocumentSnapshot<Map<String, Object?>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    return Message.fromJson(snapshot.data()!);
+  }
+
+  static Map<String, Object?> toFirestore(
+    Message value,
+    SetOptions? options,
+  ) {
+    return value.toJson();
+  }
+
+  /// A reference to the containing [ConversationDocumentReference] if this is a subcollection.
+  ConversationDocumentReference get parent;
+
+  @override
+  MessageDocumentReference doc([String? id]);
+
+  /// Add a new document to this collection with the specified data,
+  /// assigning it a document ID automatically.
+  Future<MessageDocumentReference> add(Message value);
+}
+
+class _$MessageCollectionReference extends _$MessageQuery
+    implements MessageCollectionReference {
+  factory _$MessageCollectionReference(
+    DocumentReference<Conversation> parent,
+  ) {
+    return _$MessageCollectionReference._(
+      ConversationDocumentReference(parent),
+      parent.collection('messages').withConverter(
+            fromFirestore: MessageCollectionReference.fromFirestore,
+            toFirestore: MessageCollectionReference.toFirestore,
+          ),
+    );
+  }
+
+  _$MessageCollectionReference._(
+    this.parent,
+    CollectionReference<Message> reference,
+  ) : super(reference, reference);
+
+  @override
+  final ConversationDocumentReference parent;
+
+  String get path => reference.path;
+
+  @override
+  CollectionReference<Message> get reference =>
+      super.reference as CollectionReference<Message>;
+
+  @override
+  MessageDocumentReference doc([String? id]) {
+    return MessageDocumentReference(
+      reference.doc(id),
+    );
+  }
+
+  @override
+  Future<MessageDocumentReference> add(Message value) {
+    return reference.add(value).then((ref) => MessageDocumentReference(ref));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$MessageCollectionReference &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+abstract class MessageDocumentReference
+    extends FirestoreDocumentReference<MessageDocumentSnapshot> {
+  factory MessageDocumentReference(DocumentReference<Message> reference) =
+      _$MessageDocumentReference;
+
+  DocumentReference<Message> get reference;
+
+  /// A reference to the [MessageCollectionReference] containing this document.
+  MessageCollectionReference get parent {
+    return _$MessageCollectionReference(
+      reference.parent.parent!.withConverter<Conversation>(
+        fromFirestore: ConversationCollectionReference.fromFirestore,
+        toFirestore: ConversationCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  @override
+  Stream<MessageDocumentSnapshot> snapshots();
+
+  @override
+  Future<MessageDocumentSnapshot> get([GetOptions? options]);
+
+  @override
+  Future<void> delete();
+
+  Future<void> update({
+    String text,
+  });
+
+  Future<void> set(Message value);
+}
+
+class _$MessageDocumentReference
+    extends FirestoreDocumentReference<MessageDocumentSnapshot>
+    implements MessageDocumentReference {
+  _$MessageDocumentReference(this.reference);
+
+  @override
+  final DocumentReference<Message> reference;
+
+  /// A reference to the [MessageCollectionReference] containing this document.
+  MessageCollectionReference get parent {
+    return _$MessageCollectionReference(
+      reference.parent.parent!.withConverter<Conversation>(
+        fromFirestore: ConversationCollectionReference.fromFirestore,
+        toFirestore: ConversationCollectionReference.toFirestore,
+      ),
+    );
+  }
+
+  @override
+  Stream<MessageDocumentSnapshot> snapshots() {
+    return reference.snapshots().map((snapshot) {
+      return MessageDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<MessageDocumentSnapshot> get([GetOptions? options]) {
+    return reference.get(options).then((snapshot) {
+      return MessageDocumentSnapshot._(
+        snapshot,
+        snapshot.data(),
+      );
+    });
+  }
+
+  @override
+  Future<void> delete() {
+    return reference.delete();
+  }
+
+  Future<void> update({
+    Object? text = _sentinel,
+  }) async {
+    final json = {
+      if (text != _sentinel) "text": text as String,
+    };
+
+    return reference.update(json);
+  }
+
+  Future<void> set(Message value) {
+    return reference.set(value);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MessageDocumentReference &&
+        other.runtimeType == runtimeType &&
+        other.parent == parent &&
+        other.id == id;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, parent, id);
+}
+
+class MessageDocumentSnapshot extends FirestoreDocumentSnapshot {
+  MessageDocumentSnapshot._(
+    this.snapshot,
+    this.data,
+  );
+
+  @override
+  final DocumentSnapshot<Message> snapshot;
+
+  @override
+  MessageDocumentReference get reference {
+    return MessageDocumentReference(
+      snapshot.reference,
+    );
+  }
+
+  @override
+  final Message? data;
+}
+
+abstract class MessageQuery implements QueryReference<MessageQuerySnapshot> {
+  @override
+  MessageQuery limit(int limit);
+
+  @override
+  MessageQuery limitToLast(int limit);
+
+  MessageQuery whereText({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
+
+  MessageQuery orderByText({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    MessageDocumentSnapshot? startAtDocument,
+    MessageDocumentSnapshot? endAtDocument,
+    MessageDocumentSnapshot? endBeforeDocument,
+    MessageDocumentSnapshot? startAfterDocument,
+  });
+}
+
+class _$MessageQuery extends QueryReference<MessageQuerySnapshot>
+    implements MessageQuery {
+  _$MessageQuery(
+    this.reference,
+    this._collection,
+  );
+
+  final CollectionReference<Object?> _collection;
+
+  @override
+  final Query<Message> reference;
+
+  MessageQuerySnapshot _decodeSnapshot(
+    QuerySnapshot<Message> snapshot,
+  ) {
+    final docs = snapshot.docs.map((e) {
+      return MessageQueryDocumentSnapshot._(e, e.data());
+    }).toList();
+
+    final docChanges = snapshot.docChanges.map((change) {
+      return FirestoreDocumentChange<MessageDocumentSnapshot>(
+        type: change.type,
+        oldIndex: change.oldIndex,
+        newIndex: change.newIndex,
+        doc: MessageDocumentSnapshot._(change.doc, change.doc.data()),
+      );
+    }).toList();
+
+    return MessageQuerySnapshot._(
+      snapshot,
+      docs,
+      docChanges,
+    );
+  }
+
+  @override
+  Stream<MessageQuerySnapshot> snapshots([SnapshotOptions? options]) {
+    return reference.snapshots().map(_decodeSnapshot);
+  }
+
+  @override
+  Future<MessageQuerySnapshot> get([GetOptions? options]) {
+    return reference.get(options).then(_decodeSnapshot);
+  }
+
+  @override
+  MessageQuery limit(int limit) {
+    return _$MessageQuery(
+      reference.limit(limit),
+      _collection,
+    );
+  }
+
+  @override
+  MessageQuery limitToLast(int limit) {
+    return _$MessageQuery(
+      reference.limitToLast(limit),
+      _collection,
+    );
+  }
+
+  MessageQuery whereText({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$MessageQuery(
+      reference.where(
+        'text',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  MessageQuery orderByText({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    MessageDocumentSnapshot? startAtDocument,
+    MessageDocumentSnapshot? endAtDocument,
+    MessageDocumentSnapshot? endBeforeDocument,
+    MessageDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('text', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$MessageQuery(query, _collection);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is _$MessageQuery &&
+        other.runtimeType == runtimeType &&
+        other.reference == reference;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reference);
+}
+
+class MessageQuerySnapshot
+    extends FirestoreQuerySnapshot<MessageQueryDocumentSnapshot> {
+  MessageQuerySnapshot._(
+    this.snapshot,
+    this.docs,
+    this.docChanges,
+  );
+
+  final QuerySnapshot<Message> snapshot;
+
+  @override
+  final List<MessageQueryDocumentSnapshot> docs;
+
+  @override
+  final List<FirestoreDocumentChange<MessageDocumentSnapshot>> docChanges;
+}
+
+class MessageQueryDocumentSnapshot extends FirestoreQueryDocumentSnapshot
+    implements MessageDocumentSnapshot {
+  MessageQueryDocumentSnapshot._(this.snapshot, this.data);
+
+  @override
+  final QueryDocumentSnapshot<Message> snapshot;
+
+  @override
+  MessageDocumentReference get reference {
+    return MessageDocumentReference(snapshot.reference);
+  }
+
+  @override
+  final Message data;
 }
 
 // **************************************************************************

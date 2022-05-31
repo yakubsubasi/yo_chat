@@ -24,5 +24,6 @@ class YoUser {
 }
 
 @Collection<YoUser>('yo_users')
-@Collection<Conversation>('yo_users/*/conversations')
+@Collection<Conversation>('yo_users/*/conversations', name: "conversations")
+@Collection<Message>('yo_users/*/conversations/*/messages', name: "messages")
 final usersRef = YoUserCollectionReference();
