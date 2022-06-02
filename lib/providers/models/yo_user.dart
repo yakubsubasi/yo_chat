@@ -8,19 +8,27 @@ part 'yo_user.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class YoUser {
-  YoUser({
-    required this.name,
-    required this.email,
-    this.photoUrl,
-    required this.uid,
-    required this.phoneNumber,
-  });
+  YoUser(
+      {required this.name,
+      required this.email,
+      this.photoUrl,
+      required this.uid,
+      required this.phoneNumber,
+      this.fcmToken});
 
   final String name;
   final String email;
   final String? photoUrl;
   final String phoneNumber;
   final String uid;
+  String? fcmToken;
+  String get displayName {
+    if (name.isNotEmpty) {
+      return name;
+    } else {
+      return phoneNumber;
+    }
+  }
 }
 
 @Collection<YoUser>('yo_users')

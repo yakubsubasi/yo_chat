@@ -124,6 +124,8 @@ abstract class YoUserDocumentReference
     String? photoUrl,
     String phoneNumber,
     String uid,
+    String? fcmToken,
+    String displayName,
   });
 
   Future<void> set(YoUser value);
@@ -178,6 +180,8 @@ class _$YoUserDocumentReference
     Object? photoUrl = _sentinel,
     Object? phoneNumber = _sentinel,
     Object? uid = _sentinel,
+    Object? fcmToken = _sentinel,
+    Object? displayName = _sentinel,
   }) async {
     final json = {
       if (name != _sentinel) "name": name as String,
@@ -185,6 +189,8 @@ class _$YoUserDocumentReference
       if (photoUrl != _sentinel) "photoUrl": photoUrl as String?,
       if (phoneNumber != _sentinel) "phoneNumber": phoneNumber as String,
       if (uid != _sentinel) "uid": uid as String,
+      if (fcmToken != _sentinel) "fcmToken": fcmToken as String?,
+      if (displayName != _sentinel) "displayName": displayName as String,
     };
 
     return reference.update(json);
@@ -288,6 +294,28 @@ abstract class YoUserQuery implements QueryReference<YoUserQuerySnapshot> {
     List<String>? whereIn,
     List<String>? whereNotIn,
   });
+  YoUserQuery whereFcmToken({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  });
+  YoUserQuery whereDisplayName({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  });
 
   YoUserQuery orderByName({
     bool descending = false,
@@ -338,6 +366,30 @@ abstract class YoUserQuery implements QueryReference<YoUserQuerySnapshot> {
   });
 
   YoUserQuery orderByUid({
+    bool descending = false,
+    String startAt,
+    String startAfter,
+    String endAt,
+    String endBefore,
+    YoUserDocumentSnapshot? startAtDocument,
+    YoUserDocumentSnapshot? endAtDocument,
+    YoUserDocumentSnapshot? endBeforeDocument,
+    YoUserDocumentSnapshot? startAfterDocument,
+  });
+
+  YoUserQuery orderByFcmToken({
+    bool descending = false,
+    String? startAt,
+    String? startAfter,
+    String? endAt,
+    String? endBefore,
+    YoUserDocumentSnapshot? startAtDocument,
+    YoUserDocumentSnapshot? endAtDocument,
+    YoUserDocumentSnapshot? endBeforeDocument,
+    YoUserDocumentSnapshot? startAfterDocument,
+  });
+
+  YoUserQuery orderByDisplayName({
     bool descending = false,
     String startAt,
     String startAfter,
@@ -551,6 +603,62 @@ class _$YoUserQuery extends QueryReference<YoUserQuerySnapshot>
     );
   }
 
+  YoUserQuery whereFcmToken({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String?>? whereIn,
+    List<String?>? whereNotIn,
+  }) {
+    return _$YoUserQuery(
+      reference.where(
+        'fcmToken',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
+  YoUserQuery whereDisplayName({
+    String? isEqualTo,
+    String? isNotEqualTo,
+    String? isLessThan,
+    String? isLessThanOrEqualTo,
+    String? isGreaterThan,
+    String? isGreaterThanOrEqualTo,
+    bool? isNull,
+    List<String>? whereIn,
+    List<String>? whereNotIn,
+  }) {
+    return _$YoUserQuery(
+      reference.where(
+        'displayName',
+        isEqualTo: isEqualTo,
+        isNotEqualTo: isNotEqualTo,
+        isLessThan: isLessThan,
+        isLessThanOrEqualTo: isLessThanOrEqualTo,
+        isGreaterThan: isGreaterThan,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isNull: isNull,
+        whereIn: whereIn,
+        whereNotIn: whereNotIn,
+      ),
+      _collection,
+    );
+  }
+
   YoUserQuery orderByName({
     bool descending = false,
     Object? startAt = _sentinel,
@@ -731,6 +839,90 @@ class _$YoUserQuery extends QueryReference<YoUserQuerySnapshot>
     YoUserDocumentSnapshot? startAfterDocument,
   }) {
     var query = reference.orderBy('uid', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$YoUserQuery(query, _collection);
+  }
+
+  YoUserQuery orderByFcmToken({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    YoUserDocumentSnapshot? startAtDocument,
+    YoUserDocumentSnapshot? endAtDocument,
+    YoUserDocumentSnapshot? endBeforeDocument,
+    YoUserDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('fcmToken', descending: descending);
+
+    if (startAtDocument != null) {
+      query = query.startAtDocument(startAtDocument.snapshot);
+    }
+    if (startAfterDocument != null) {
+      query = query.startAfterDocument(startAfterDocument.snapshot);
+    }
+    if (endAtDocument != null) {
+      query = query.endAtDocument(endAtDocument.snapshot);
+    }
+    if (endBeforeDocument != null) {
+      query = query.endBeforeDocument(endBeforeDocument.snapshot);
+    }
+
+    if (startAt != _sentinel) {
+      query = query.startAt([startAt]);
+    }
+    if (startAfter != _sentinel) {
+      query = query.startAfter([startAfter]);
+    }
+    if (endAt != _sentinel) {
+      query = query.endAt([endAt]);
+    }
+    if (endBefore != _sentinel) {
+      query = query.endBefore([endBefore]);
+    }
+
+    return _$YoUserQuery(query, _collection);
+  }
+
+  YoUserQuery orderByDisplayName({
+    bool descending = false,
+    Object? startAt = _sentinel,
+    Object? startAfter = _sentinel,
+    Object? endAt = _sentinel,
+    Object? endBefore = _sentinel,
+    YoUserDocumentSnapshot? startAtDocument,
+    YoUserDocumentSnapshot? endAtDocument,
+    YoUserDocumentSnapshot? endBeforeDocument,
+    YoUserDocumentSnapshot? startAfterDocument,
+  }) {
+    var query = reference.orderBy('displayName', descending: descending);
 
     if (startAtDocument != null) {
       query = query.startAtDocument(startAtDocument.snapshot);
@@ -2235,6 +2427,7 @@ YoUser _$YoUserFromJson(Map<String, dynamic> json) => YoUser(
       photoUrl: json['photoUrl'] as String?,
       uid: json['uid'] as String,
       phoneNumber: json['phoneNumber'] as String,
+      fcmToken: json['fcmToken'] as String?,
     );
 
 Map<String, dynamic> _$YoUserToJson(YoUser instance) => <String, dynamic>{
@@ -2243,4 +2436,5 @@ Map<String, dynamic> _$YoUserToJson(YoUser instance) => <String, dynamic>{
       'photoUrl': instance.photoUrl,
       'phoneNumber': instance.phoneNumber,
       'uid': instance.uid,
+      'fcmToken': instance.fcmToken,
     };

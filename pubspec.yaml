@@ -47,6 +47,7 @@ dependencies:
   firebase_app_check: ^0.0.6+13
   firebase_remote_config: ^2.0.8
   firebase_analytics: ^9.1.9
+  shared_preferences: ^2.0.15
   
 
 dev_dependencies:

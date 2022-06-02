@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:yo_chat/controllers/authentication_controller.dart';
+import 'package:yo_chat/controllers/notificaiton_controller.dart';
 import 'package:yo_chat/controllers/remote_config_controller.dart';
 import 'package:yo_chat/pages/chat_page/chat_page.dart';
 import 'package:yo_chat/providers/firestore_provider.dart';
@@ -107,6 +108,9 @@ class ConversationController extends GetxController {
             sentTime: messageTime,
             direction: MessageDirection.incoming),
       );
+
+      Get.find<NotificationController>()
+          .sendMessageNotification(conversation.id, message);
     }
   }
 }
