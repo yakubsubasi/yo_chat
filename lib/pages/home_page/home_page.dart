@@ -10,6 +10,7 @@ import 'package:yo_chat/widgets/profile_image.dart';
 
 import '../../providers/models/conversation.dart';
 import '../chat_page/chat_page.dart';
+import 'package:yo_chat/extensions/date_time_extensions.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class HomePage extends StatelessWidget {
                     ),
                   Text(conversation.lastMessage),
                   Text(
-                    conversation.lastMessageTime?.toString() ?? "",
+                    conversation.lastMessageTime?.toHHMM() ?? "",
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yo_chat/extensions/date_time_extensions.dart';
 
 import '../../../providers/models/message.dart';
 
@@ -35,7 +36,7 @@ class MessageTile extends StatelessWidget {
                           : Colors.white),
                 ),
                 Text(
-                  message.sentTimetoString(),
+                  message.sentTime.toHHMM(),
                   style: TextStyle(
                       fontSize: 10,
                       color: message.direction == MessageDirection.incoming
