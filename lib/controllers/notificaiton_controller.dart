@@ -11,6 +11,7 @@ import 'package:yo_chat/providers/fcm_provider.dart';
 import 'package:yo_chat/providers/firestore_provider.dart';
 import 'package:yo_chat/providers/models/yo_user.dart';
 import 'package:yo_chat/providers/storage_provider.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class NotificationController extends GetxController {
   String? key;
@@ -21,13 +22,17 @@ class NotificationController extends GetxController {
 
   StreamSubscription<User?>? userDocSub;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    var secretFile = File('../data/secret.txt');
-    if (secretFile.existsSync()) {
-      secretFile.readAsString().then((String contents) {
-        key = contents;
-      });
+
+    try {
+      var secretFile = await rootBundle.loadString('lib/data/secret.txt');
+
+      if (secretFile.isNotEmpty) {
+        key = secretFile;
+      }
+    } catch (e) {
+      print("secret not found");
     }
     userDocSub = FirebaseAuth.instance.idTokenChanges().listen((event) async {
       if (event != null) {
@@ -75,7 +80,7 @@ class NotificationController extends GetxController {
   void _sendNotification(
       {required String to, required String title, required String body}) {
     if (key != null) {
-      provider.postNotification(to: to, secret: key!);
+      provider.postNotification(to: to, secret: key!, title: title, body: body);
     }
   }
 
