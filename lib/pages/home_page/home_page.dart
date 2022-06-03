@@ -35,13 +35,13 @@ class HomePage extends StatelessWidget {
             ListTile(
               title: Text('Create Conversation'),
               onTap: () {
-                Get.to(CreateConversationPage());
+                Get.to(() => CreateConversationPage());
               },
             ),
             ListTile(
               title: Text('Settings'),
               onTap: () {
-                Get.to(SettingsPage());
+                Get.to(() => SettingsPage());
               },
             ),
           ],

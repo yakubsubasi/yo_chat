@@ -48,6 +48,8 @@ dependencies:
   firebase_remote_config: ^2.0.8
   firebase_analytics: ^9.1.9
   shared_preferences: ^2.0.15
+  image_picker: ^0.8.5+3
+  firebase_storage: ^10.2.17
   
 
 dev_dependencies:

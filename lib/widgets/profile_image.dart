@@ -15,7 +15,7 @@ class ProfileImage extends StatelessWidget {
     if (Uri.tryParse(defaultPath)?.hasAbsolutePath ??
         false || (Uri.tryParse(photoURL ?? "")?.hasAbsolutePath ?? false)) {
       return CircleAvatar(
-        child: Image.network(
+        backgroundImage: NetworkImage(
           photoURL ?? defaultPath,
         ),
       );

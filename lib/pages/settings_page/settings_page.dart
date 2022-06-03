@@ -1,5 +1,7 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:yo_chat/controllers/authentication_controller.dart';
 import 'package:yo_chat/widgets/profile_image.dart';
 
@@ -63,20 +65,68 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () async {
                 // change user name
 
-                await userDoc!.update(name: _nameController.text);
-                final name = (await userDoc!.get()).data!;
+                try {
+                  await userDoc!.update(name: _nameController.text);
+                  final name = (await userDoc!.get()).data!;
 
-                final snackBar = SnackBar(
-                  content: Text(
-                      'Kullanıcı ${name.displayName} adınız değiştirildi!'),
-                  action: SnackBarAction(
-                    label: 'Undo',
-                    onPressed: () {
-                      // Some code to undo the change.
-                    },
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  final snackBar = SnackBar(
+                    content: Text(
+                        'Kullanıcı ${name.displayName} adınız değiştirildi!'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } catch (e) {
+                  const snackBar = SnackBar(
+                    content: Text('Bir hata oluştu!'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+              },
+            ),
+            ElevatedButton(
+              child: Text('Update Profile Image'),
+              onPressed: () async {
+                try {
+                  var picker = ImagePicker();
+                  var image =
+                      await picker.pickImage(source: ImageSource.gallery);
+                  if (image == null) return;
+                  var uid = authController.user.value?.uid;
+                  if (uid == null) return;
+
+                  final loadingSnackBar = SnackBar(
+                    content: Row(
+                      children: [
+                        CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        SizedBox(width: 15),
+                        const Text('Profil Resminiz Değiştiriliyor'),
+                      ],
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(loadingSnackBar);
+
+                  var imageBytes = await image.readAsBytes();
+
+                  var upload = await FirebaseStorage.instance
+                      .ref("profile_image/$uid/image.png")
+                      .putData(imageBytes);
+
+                  var path = await upload.ref.getDownloadURL();
+
+                  await userDoc!.update(photoUrl: path);
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  const snackBar = SnackBar(
+                    content: Text('Profil Resminiz değiştirildi!'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } catch (e) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  const snackBar = SnackBar(
+                    content: Text('Bir hata oluştu!'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
               },
             ),
           ],
