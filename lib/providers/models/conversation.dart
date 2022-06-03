@@ -1,4 +1,5 @@
 import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yo_chat/providers/models/yo_user.dart';
 
@@ -16,7 +17,7 @@ class Conversation {
   DateTime? lastMessageTime;
   int unreadCount;
   @JsonKey(ignore: true)
-  String displayName = "";
+  var displayName = "".obs;
   Conversation({
     required this.id,
     required this.name,
@@ -31,17 +32,17 @@ class Conversation {
 
   Future<void> setDisplayName() async {
     if (name.isNotEmpty) {
-      displayName = name;
+      displayName.value = name;
       return;
     } else {
       var userName =
           await usersRef.doc(id).get().then((value) => value.data?.name);
       if (userName != null && userName.isNotEmpty) {
-        displayName = userName;
+        displayName.value = userName;
         return;
       }
 
-      displayName = phoneNumber ?? "";
+      displayName.value = phoneNumber ?? "";
     }
   }
 
