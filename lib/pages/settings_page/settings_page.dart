@@ -109,7 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   var imageBytes = await image.readAsBytes();
 
                   var upload = await FirebaseStorage.instance
-                      .ref("profile_image/$uid/image.png")
+                      .ref("profile_image/$uid/image.jpg")
                       .putData(imageBytes);
 
                   var path = await upload.ref.getDownloadURL();
