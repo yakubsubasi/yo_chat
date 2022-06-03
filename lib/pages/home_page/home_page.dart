@@ -12,6 +12,8 @@ import '../../providers/models/conversation.dart';
 import '../chat_page/chat_page.dart';
 import 'package:yo_chat/extensions/date_time_extensions.dart';
 
+import '../settings_page/settings_page.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -21,6 +23,30 @@ class HomePage extends StatelessWidget {
     final conversationController = Get.find<ConversationController>();
 
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Text('Yo Chat'),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            ListTile(
+              title: Text('Create Conversation'),
+              onTap: () {
+                Get.to(CreateConversationPage());
+              },
+            ),
+            ListTile(
+              title: Text('Settings'),
+              onTap: () {
+                Get.to(SettingsPage());
+              },
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: const Text('Yo Chat'),
       ),

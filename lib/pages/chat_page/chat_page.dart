@@ -18,7 +18,10 @@ class ChatPage extends StatelessWidget {
       appBar: AppBar(
         leadingWidth: 100,
         leading: ElevatedButton(
-          style: ButtonStyle(elevation: MaterialStateProperty.all(0)),
+          style: ButtonStyle(
+            elevation: MaterialStateProperty.all(0),
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          ),
           onPressed: (() {
             Get.back();
           }),
@@ -26,7 +29,7 @@ class ChatPage extends StatelessWidget {
             children: [Icon(Icons.arrow_back_ios), CircleAvatar()],
           ),
         ),
-        title: Text('${conversation.name}'),
+        title: Text('${conversation.displayName}'),
       ),
       body: Column(
         children: [

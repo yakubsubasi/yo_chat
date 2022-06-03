@@ -25,6 +25,7 @@ class MessagesListView extends StatelessWidget {
         useStickyGroupSeparators: true,
         floatingHeader: true,
         reverse: true,
+        itemComparator: (a, b) => a.sentTime.compareTo(b.sentTime),
         order: GroupedListOrder.DESC,
         elements: controller.messages.value,
         groupHeaderBuilder: (Message message) => SizedBox(

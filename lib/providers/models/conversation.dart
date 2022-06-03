@@ -15,7 +15,8 @@ class Conversation {
   String lastMessage;
   DateTime? lastMessageTime;
   int unreadCount;
-
+  @JsonKey(ignore: true)
+  String displayName = "";
   Conversation({
     required this.id,
     required this.name,
@@ -24,7 +25,26 @@ class Conversation {
     this.lastMessage = "",
     this.lastMessageTime,
     this.unreadCount = 0,
-  });
+  }) {
+    setDisplayName();
+  }
+
+  Future<void> setDisplayName() async {
+    if (name.isNotEmpty) {
+      displayName = name;
+      return;
+    } else {
+      var userName =
+          await usersRef.doc(id).get().then((value) => value.data?.name);
+      if (userName != null && userName.isNotEmpty) {
+        displayName = userName;
+        return;
+      }
+
+      displayName = phoneNumber ?? "";
+    }
+  }
+
   factory Conversation.fromJson(Map<String, dynamic> data) =>
       _$ConversationFromJson(data);
   factory Conversation.fromUser(YoUser user) => Conversation(
@@ -34,12 +54,4 @@ class Conversation {
         phoneNumber: user.phoneNumber,
       );
   Map<String, dynamic> toJson() => _$ConversationToJson(this);
-
-  String get displayName {
-    if (name.isNotEmpty) {
-      return name;
-    } else {
-      return phoneNumber ?? "";
-    }
-  }
 }
