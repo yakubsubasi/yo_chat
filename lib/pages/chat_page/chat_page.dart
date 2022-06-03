@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yo_chat/controllers/conversation_controller.dart';
 import 'package:yo_chat/providers/models/conversation.dart';
+import 'package:yo_chat/widgets/profile_image.dart';
 import 'widgets/message_text_field.dart';
 import 'widgets/messages_list_view.dart';
 
@@ -26,7 +27,14 @@ class ChatPage extends StatelessWidget {
             Get.back();
           }),
           child: Row(
-            children: [Icon(Icons.arrow_back_ios), CircleAvatar()],
+            children: [
+              Icon(Icons.arrow_back_ios),
+              Obx(
+                () => ProfileImage(
+                  photoURL: conversation.displayPhotoURL.value,
+                ),
+              )
+            ],
           ),
         ),
         title: Text('${conversation.displayName}'),

@@ -58,8 +58,10 @@ class HomePage extends StatelessWidget {
             final conversation = conversationController.conversations[index];
             return ListTile(
               title: Obx(() => Text(conversation.displayName.value)),
-              leading: ProfileImage(
-                photoURL: conversation.photoUrl,
+              leading: Obx(
+                () => ProfileImage(
+                  photoURL: conversation.displayPhotoURL.value,
+                ),
               ),
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

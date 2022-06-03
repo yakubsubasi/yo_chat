@@ -18,6 +18,7 @@ class Conversation {
   int unreadCount;
   @JsonKey(ignore: true)
   var displayName = "".obs;
+  var displayPhotoURL = RxnString();
   Conversation({
     required this.id,
     required this.name,
@@ -27,23 +28,22 @@ class Conversation {
     this.lastMessageTime,
     this.unreadCount = 0,
   }) {
-    setDisplayName();
+    setDisplayNameAndPhoto();
   }
 
-  Future<void> setDisplayName() async {
+  Future<void> setDisplayNameAndPhoto() async {
+    var user = await usersRef.doc(id).get().then((value) => value.data);
+
     if (name.isNotEmpty) {
       displayName.value = name;
-      return;
     } else {
-      var userName =
-          await usersRef.doc(id).get().then((value) => value.data?.name);
+      var userName = user?.displayName;
       if (userName != null && userName.isNotEmpty) {
         displayName.value = userName;
-        return;
       }
-
-      displayName.value = phoneNumber ?? "";
     }
+
+    displayPhotoURL.value = photoUrl ?? user?.photoUrl;
   }
 
   factory Conversation.fromJson(Map<String, dynamic> data) =>
