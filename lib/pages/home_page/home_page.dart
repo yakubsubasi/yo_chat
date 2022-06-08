@@ -60,6 +60,7 @@ class HomePage extends StatelessWidget {
               title: Obx(() => Text(conversation.displayName.value)),
               leading: Obx(
                 () => ProfileImage(
+                  enable: true,
                   photoURL: conversation.displayPhotoURL.value,
                 ),
               ),
