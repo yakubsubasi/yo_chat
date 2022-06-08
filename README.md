@@ -1,16 +1,12 @@
 # yo_chat
 
-A new Flutter project.
+This is a fully functioning messaging - chat application based on Flutter. Application supports phone number verification, text messaging, message notificaitons, update avatar and profile.
 
-## Getting Started
+![Yo Chat - banner](https://user-images.githubusercontent.com/67879777/172612979-d32daa0f-1ed7-4f8e-916d-263efc94644a.png)
 
-This project is a starting point for a Flutter application.
+Project Covers: 
+  - Firebase Authantication with Phone Number
+  - Firebase Cloud Messaging for notificaitons
+  - Firebase Remote Config
+  - Firebase Cloud Firestore
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
